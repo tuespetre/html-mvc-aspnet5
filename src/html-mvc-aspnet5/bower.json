@@ -1,0 +1,8 @@
+{
+  "name": "html-mvc-aspnet5",
+  "private": true,
+  "dependencies": {
+    "html-mvc": "git+https://github.com/tuespetre/html-mvc.git",
+    "bootstrap": "*"
+  }
+}

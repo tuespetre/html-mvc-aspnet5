@@ -1,0 +1,15 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewBag.Title = "Home";
+    var HomeIndexViewModel = Model;
+}
+<view name="HomeIndex" outer="MainLayout" model="@HomeIndexViewModel">
+    <h2>Home/Index View</h2>
+    <p>
+        Bound text from the view model: <span bindtext="Contents"></span>
+    </p>
+    <p>
+        Random identifier: <span bindtext="Random"></span>
+    </p>
+    @Html.Partial("SharedComponent")
+</view>

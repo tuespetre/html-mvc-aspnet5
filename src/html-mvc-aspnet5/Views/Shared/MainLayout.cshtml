@@ -1,0 +1,40 @@
+﻿@inject LayoutViewModel LayoutViewModel
+@{ 
+    Layout = "_Shell";
+}
+<view name="MainLayout" model="@LayoutViewModel">
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-text">
+                    html-mvc-aspnet5 demo
+                </div>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="@Url.Action("Index")" view="HomeIndex" model="HomeIndexViewModel" title="Home">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Form")" view="HomeForm" title="Form Demo">
+                        Form
+                    </a>
+                </li>
+            </ul>
+            <div class="navbar-right">
+                <div class="navbar-text" bindtext="Random"></div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer>
+        <div class="container">
+            <blockquote>
+                I hope you enjoyed the demo!
+            </blockquote>
+        </div>
+    </footer>
+</view>
