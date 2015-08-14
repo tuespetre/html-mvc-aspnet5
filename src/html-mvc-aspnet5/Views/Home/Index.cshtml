@@ -6,10 +6,22 @@
 <view name="HomeIndex" outer="MainLayout" model="@HomeIndexViewModel">
     <h2>Home/Index View</h2>
     <p>
-        Bound text from the view model: <span bindtext="Contents"></span>
+        Everything in this 'app' is fully server-rendered at first. Once
+        your browser has cached the view parts of each page, it will start
+        making fetches for JSON models instead of HTML and re-use the cached
+        parts to reassemble the required view.
     </p>
     <p>
-        Random identifier: <span bindtext="Random"></span>
+        Below is a random identifier that binds from the fetched model:
     </p>
-    @Html.Partial("SharedComponent")
+    <div class="well" bindtext="Random">
+    </div>
+    <p>
+        If you 'navigate' to this page from the form page, the server sends
+        a fresh layout view model to refresh the random ID in the navbar.
+        It does not send the fresh layout view model when going from this page
+        to the form page; this shows how you can let the server make some choices
+        about what needs updating.
+    </p>
+    @Component.Invoke("View", "ReusableComponent", "Nested")
 </view>

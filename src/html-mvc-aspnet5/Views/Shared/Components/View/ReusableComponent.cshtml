@@ -1,0 +1,16 @@
+﻿<view name="ReusableComponent" class="panel panel-info" scope="@Model.scope">
+    <div class="panel-heading">
+        <h4>Reusable Component</h4>
+    </div>
+    <div class="panel-body">
+        <p>
+            This is a reusable 'partial view'; views that use it
+            specify a 'scope' attribute on it so their models can
+            propagate down to this view for the bindings it expects.
+            Below is some content that came from the parent view:
+        </p>
+        <div class="well">
+            <span bindtext="Contents"></span>
+        </div>
+    </div>
+</view>

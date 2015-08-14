@@ -7,8 +7,13 @@ namespace html_mvc_aspnet5.Models
 {
     public class HomeFormFormModel
     {
-        public string FirstName { get; set; }
+        public const string DeleteCommand = "Delete";
+        public const string CreateCommand = "Create";
 
-        public string LastName { get; set; }
+        public string Description { get; set; }
+
+        public Guid ItemId { get; set; }
+
+        public string Command { get; set; }
     }
 }

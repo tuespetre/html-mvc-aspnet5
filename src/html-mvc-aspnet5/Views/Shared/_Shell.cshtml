@@ -7,6 +7,15 @@
     <title>@ViewBag.Title</title>
     <script src="~/lib/html-mvc/dist/html-mvc.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <style> 
+        [hidden] { display: none; } 
+        view { display: block; }
+
+        .create-item-input {
+            width: 200px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     @RenderBody()

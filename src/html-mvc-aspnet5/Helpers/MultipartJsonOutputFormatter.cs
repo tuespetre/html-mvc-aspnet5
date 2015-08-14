@@ -26,10 +26,9 @@ namespace html_mvc_aspnet5.Helpers
 
         public override async Task WriteResponseBodyAsync(OutputFormatterContext context)
         { 
-            var appServices = context.HttpContext.ApplicationServices;
             var reqServices = context.HttpContext.RequestServices;
-            var multiContext = (MultiObjectResultContext)appServices.GetService(typeof(MultiObjectResultContext));
-            var jsonHelper = (IJsonHelper)appServices.GetService(typeof(IJsonHelper));
+            var multiContext = (MultiObjectResultContext)reqServices.GetService(typeof(MultiObjectResultContext));
+            var jsonHelper = (IJsonHelper)reqServices.GetService(typeof(IJsonHelper));
             var content = new MultipartContent("json");
             var resultObject = context.Object;
             var resultObjectWasAdded = false;
@@ -40,14 +39,14 @@ namespace html_mvc_aspnet5.Helpers
 
                 if (additional.GetType() != entry.Value)
                 {
-                    additional = appServices.GetService(entry.Value);
+                    additional = reqServices.GetService(entry.Value);
                 }
                 else
                 {
                     resultObjectWasAdded = true;
                 }
 
-                content.Add(ContentPart(jsonHelper, entry.Key, resultObject));
+                content.Add(ContentPart(jsonHelper, entry.Key, additional));
             }
 
             if (!resultObjectWasAdded)

@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace html_mvc_aspnet5.Helpers
@@ -58,25 +59,9 @@ namespace html_mvc_aspnet5.Helpers
                 return;
             }
 
-            if (output.Attributes.ContainsName("bindattr-hidden"))
-            {
-                var bindhidden = output.Attributes["bindattr-hidden"].Value.ToString();
-                var value = modelContext.Value(bindhidden);
-                // 'Falsy values'
-                if (value == null || string.Empty == (value as string) || value == (object)false)
-                {
-                    output.Attributes.Remove("hidden");
-                }
-                else
-                {
-                    output.Attributes.Add("hidden", value);
-                }
-            }
-
             foreach (var attribute in BindAttributes)
             {
                 if (
-                    attribute.Key == "hidden" ||
                     attribute.Key.StartsWith("bindattr-") ||
                     forbiddenForAny.Contains(attribute.Key) ||
                     (output.TagName.ToLower() == "view" && forbiddenForView.Contains(attribute.Key))
@@ -84,11 +69,18 @@ namespace html_mvc_aspnet5.Helpers
                 {
                     continue;
                 }
-                
-                if (string.IsNullOrWhiteSpace(attribute.Value)) continue;
+
                 var value = modelContext.Value(attribute.Value);
                 output.Attributes.Add($"bindattr-{attribute.Key}", attribute.Value);
-                output.Attributes.Add(attribute.Key, value);
+
+                if (true.Equals(value))
+                {
+                    output.Attributes.Add(attribute.Key, string.Empty);
+                }
+                else if (!false.Equals(value))
+                {
+                    output.Attributes.Add(attribute.Key, value);
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(BindText))
@@ -109,7 +101,33 @@ namespace html_mvc_aspnet5.Helpers
                 output.Attributes.Add("bindeach", BindEach);
                 if (value != null && value.Cast<object>().Any())
                 {
+                    ViewDataDictionary originalData;
+                    TagHelperContent template;
+                    TagHelperContent buffer;
 
+                    originalData = modelContext.CurrentData;
+                    modelContext.Initialize(new object());
+                    buffer = new DefaultTagHelperContent();
+                    template = await context.GetChildContentAsync();
+
+                    // commit a8fd85d to aspnet/Razor will make this cleaner:
+                    //   buffer.Append(await context.GetChildContentAsync(useCachedResult: false));
+                    // for now just use reflection to hack it up
+                    var delegateField = context.GetType().GetRuntimeFields().Single(f => f.Name == "_getChildContentAsync");
+                    var @delegate = delegateField.GetValue(context);
+                    var targetField = delegateField.FieldType.GetRuntimeProperties().Single(p => p.Name == "Target");
+                    var @target = targetField.GetValue(@delegate);
+                    var hackField = @target.GetType().GetRuntimeFields().Single(f => f.Name == "_childContent");
+
+                    foreach (var item in value)
+                    {
+                        hackField.SetValue(@target, null);
+                        modelContext.Initialize(item);
+                        buffer.Append(await context.GetChildContentAsync());
+                    }
+
+                    output.Content.SetContent(buffer);
+                    modelContext.CurrentData = originalData;
                 }
             }
 

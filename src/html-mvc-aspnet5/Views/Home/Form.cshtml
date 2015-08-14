@@ -1,6 +1,60 @@
-﻿@{
+﻿@model HomeFormViewModel
+@{
     ViewBag.Title = "Form Demo";
+    var HomeFormViewModel = Model;
 }
-<view name="HomeForm" outer="MainLayout">
-    <p>Form View</p>
+<view name="HomeForm" outer="MainLayout" model="@HomeFormViewModel">
+    <h2>List of items</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody bindattr-hidden="AnyItems" class="bg-warning text-warning">
+            <tr>
+                <td colspan="2" class="lead">
+                    No items to display
+                </td>
+            </tr>
+        </tbody>
+        <tbody bindeach="Items" bindattr-hidden="NoItems" bindchildren="1">
+            <tr>
+                <td bindtext="Description"></td>
+                <td>
+                    <form method="post" view="HomeForm" model="HomeFormViewModel">
+                        <input type="hidden"
+                               name="@Html.NameFor(m => m.Form.ItemId)"
+                               bindattr-value="Id" />
+                        <button type="submit"
+                                class="btn btn-sm btn-danger"
+                                name="@Html.NameFor(m => m.Form.Command)"
+                                value="@HomeFormFormModel.DeleteCommand">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <form method="post" view="HomeForm" model="HomeFormViewModel">
+                        <input type="text" class="form-control create-item-input"
+                               name="@Html.NameFor(m => m.Form.Description)"
+                               bindattr-value="Description"
+                               placeholder="Description"
+                               maxlength="10" />
+                        <button type="submit"
+                                class="btn btn-success"
+                                name="@Html.NameFor(m => m.Form.Command)"
+                                value="@HomeFormFormModel.CreateCommand">
+                            Create
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </view>

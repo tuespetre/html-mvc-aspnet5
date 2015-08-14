@@ -30,7 +30,7 @@ namespace html_mvc_aspnet5.Helpers
             if (context.Result is ObjectResult)
             {
                 var name = Name;
-                var services = context.HttpContext.ApplicationServices;
+                var services = context.HttpContext.RequestServices;
                 var multiContext = (MultiObjectResultContext)services.GetService(typeof(MultiObjectResultContext));
 
                 if (string.IsNullOrEmpty(Name))

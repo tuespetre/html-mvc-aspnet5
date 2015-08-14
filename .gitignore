@@ -5,3 +5,4 @@ lib/
 *.suo
 src/.vs/
 bin/
+*.user

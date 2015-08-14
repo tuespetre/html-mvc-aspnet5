@@ -6,26 +6,26 @@ namespace html_mvc_aspnet5.Helpers
 {
     [TargetElement("view", Attributes = "model")]
     [TargetElement("view", Attributes = "scope")]
+    [TargetElement("view", Attributes = "name")]
     public class ViewTagHelper : TagHelper
     {
-        public ViewTagHelper(IHtmlHelper html, IJsonHelper json, HtmlMvcTagHelperContext context)
+        public ViewTagHelper(IJsonHelper json, HtmlMvcTagHelperContext context)
         {
-            htmlHelper = html;
             jsonHelper = json;
             modelContext = context;
         }
 
         private const string MODEL_SCOPE = "model-scope";
 
-        private IHtmlHelper htmlHelper;
-
         private IJsonHelper jsonHelper;
 
         private HtmlMvcTagHelperContext modelContext;
 
+        public string Name { get; set; }
+
         public ModelExpression Model { get; set; }
 
-        public ModelExpression Scope { get; set; }
+        public string Scope { get; set; }
 
         public override int Order { get; } = 1;
 
@@ -43,11 +43,13 @@ namespace html_mvc_aspnet5.Helpers
                 output.Attributes.Add("model", Model.Name);
                 output.PreContent.SetContent(script.ToHtmlString(TagRenderMode.Normal).ToString());
             }
-            else if (!string.IsNullOrWhiteSpace(Scope?.Name))
+            else if (!string.IsNullOrWhiteSpace(Scope))
             {
-                output.Attributes.Add("scope", Scope.Name);
-                modelContext.Scope(Scope.Name);
+                output.Attributes.Add("scope", Scope);
+                modelContext.Scope(Scope);
             }
+
+            output.Attributes.Add("name", Name);
 
             await base.ProcessAsync(context, output);
         }
