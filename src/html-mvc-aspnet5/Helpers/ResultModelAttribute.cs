@@ -25,6 +25,8 @@ namespace html_mvc_aspnet5.Helpers
 
         public Type Type { get; private set; }
 
+        public bool Persistent { get; set; }
+
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Result is ObjectResult)
@@ -38,7 +40,7 @@ namespace html_mvc_aspnet5.Helpers
                     name = Type.Name;
                 }
 
-                multiContext.AdditionalObjects[name] = Type;
+                multiContext.AdditionalObjects[name] = Tuple.Create(Type, Persistent);
             }
         }
     }

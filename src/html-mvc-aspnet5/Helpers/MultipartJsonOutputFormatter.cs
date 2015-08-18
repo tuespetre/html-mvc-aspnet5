@@ -37,21 +37,21 @@ namespace html_mvc_aspnet5.Helpers
             {
                 object additional = resultObject;
 
-                if (additional.GetType() != entry.Value)
+                if (additional.GetType() != entry.Value.Item1)
                 {
-                    additional = reqServices.GetService(entry.Value);
+                    additional = reqServices.GetService(entry.Value.Item1);
                 }
                 else
                 {
                     resultObjectWasAdded = true;
                 }
 
-                content.Add(ContentPart(jsonHelper, entry.Key, additional));
+                content.Add(ContentPart(jsonHelper, entry.Key, additional, entry.Value.Item2));
             }
 
             if (!resultObjectWasAdded)
             {
-                content.Add(ContentPart(jsonHelper, resultObject.GetType().Name, resultObject));
+                content.Add(ContentPart(jsonHelper, resultObject.GetType().Name, resultObject, false));
             }
 
             var response = context.HttpContext.Response;
@@ -59,13 +59,19 @@ namespace html_mvc_aspnet5.Helpers
             await content.CopyToAsync(response.Body);
         }
 
-        private HttpContent ContentPart(IJsonHelper helper, string name, object @object)
+        private HttpContent ContentPart(IJsonHelper helper, string name, object @object, bool persistent)
         {
             var json = helper.Serialize(@object);
             var part = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
 
             part.Headers.ContentType.Parameters.Add(
                 new System.Net.Http.Headers.NameValueHeaderValue("model", name));
+
+            if (persistent)
+            {
+                part.Headers.ContentType.Parameters.Add(
+                    new System.Net.Http.Headers.NameValueHeaderValue("persistent"));
+            }
 
             return part;
         }

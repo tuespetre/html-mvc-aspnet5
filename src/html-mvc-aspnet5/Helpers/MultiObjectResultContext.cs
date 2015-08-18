@@ -5,6 +5,7 @@ namespace html_mvc_aspnet5.Helpers
 {
     public class MultiObjectResultContext
     {
-        public IDictionary<string, Type> AdditionalObjects { get; } = new Dictionary<string, Type>();
+        public IDictionary<string, Tuple<Type, bool>> AdditionalObjects { get; } 
+            = new Dictionary<string, Tuple<Type, bool>>();
     }
 }

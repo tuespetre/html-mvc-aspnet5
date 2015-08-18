@@ -22,7 +22,7 @@ namespace html_mvc_aspnet5.Controllers
             this.itemRepository = itemRepository;
         }
 
-        [ResultModel(typeof(LayoutViewModel))]
+        [ResultModel(typeof(LayoutViewModel), Persistent = true)]
         [ResultModel(typeof(HomeIndexViewModel))]
         [HttpGet, Route("")]
         public HomeIndexViewModel Index()
@@ -75,6 +75,29 @@ namespace html_mvc_aspnet5.Controllers
             model.Items = itemRepository.GetAllItems().ToList();
 
             return model;
+        }
+
+        [HttpGet, Route("Get")]
+        public HomeGetViewModel Get(HomeGetFormModel form)
+        {
+            var items = itemRepository.GetAllItems();
+
+            if (!string.IsNullOrWhiteSpace(form.Filter))
+            {
+                var filter = form.Filter.ToLowerInvariant().Trim();
+
+                items =
+                    from i in items
+                    let desc = i.Description.ToLowerInvariant()
+                    where desc.Contains(filter)
+                    select i;
+            }
+
+            return new HomeGetViewModel
+            {
+                Form = form ?? new HomeGetFormModel(),
+                Items = items.ToList()
+            };
         }
     }
 }

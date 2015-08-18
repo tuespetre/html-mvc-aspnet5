@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Net.Http.Headers;
-using Microsoft.Framework.Internal;
-using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Mvc.ModelBinding;
 
 namespace html_mvc_aspnet5.Helpers
@@ -25,15 +20,13 @@ namespace html_mvc_aspnet5.Helpers
 
         public override Task WriteResponseBodyAsync(OutputFormatterContext context)
         {
-            var actionContext = context
-                .HttpContext
-                .RequestServices
-                .GetService(typeof(IScopedInstance<ActionContext>)) as IScopedInstance<ActionContext>;
+            var services = context.HttpContext.RequestServices;
 
-            var metadataProvider = context
-                .HttpContext
-                .RequestServices
-                .GetService(typeof(IModelMetadataProvider)) as IModelMetadataProvider;
+            var actionContext = services.GetService(typeof(IScopedInstance<ActionContext>)) 
+                as IScopedInstance<ActionContext>;
+
+            var metadataProvider = services.GetService(typeof(IModelMetadataProvider)) 
+                as IModelMetadataProvider;
 
             var viewResult = new ViewResult
             {
