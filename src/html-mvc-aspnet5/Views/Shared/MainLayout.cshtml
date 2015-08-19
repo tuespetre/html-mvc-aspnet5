@@ -1,5 +1,5 @@
 ﻿@inject LayoutViewModel LayoutViewModel
-@{ 
+@{
     Layout = "_Shell";
 }
 <view name="MainLayout" model="@LayoutViewModel">
@@ -12,18 +12,13 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="@Url.Action("Index")" view="HomeIndex" model="HomeIndexViewModel" title="Home">
+                    <a href="@Url.Action("Index", "Home")" view="HomeIndex" model="HomeIndexViewModel" title="Home">
                         Home
                     </a>
                 </li>
                 <li>
-                    <a href="@Url.Action("Form")" view="HomeForm" model="HomeFormViewModel" title="Form Demo">
-                        Post
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Get")" view="HomeGet" model="HomeGetViewModel" title="Get Demo">
-                        Get
+                    <a href="@Url.Action("Index", "Todo")" view="TodoIndex" model="TodoIndexViewModel" title="Todo Demo">
+                        Todo Demo
                     </a>
                 </li>
             </ul>
@@ -33,16 +28,18 @@
         </div>
     </nav>
     <div class="container">
-        @RenderBody()
-    </div>
-    <footer>
-        <div class="container">
-            <blockquote>
-                I hope you enjoyed the demo!
-                <div class="text-muted">
-                    <cite>&mdash; Derek</cite>
-                </div>
-            </blockquote>
+        <div class="row">
+            <div class="col-lg-8 col-lg-push-2">
+                @RenderBody()
+                <footer>
+                    <blockquote>
+                        I hope you enjoyed the demo!
+                        <div class="text-muted">
+                            <cite>&mdash; Derek</cite>
+                        </div>
+                    </blockquote>
+                </footer>
+            </div>
         </div>
-    </footer>
+    </div>
 </view>

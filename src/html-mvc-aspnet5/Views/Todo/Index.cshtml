@@ -1,10 +1,19 @@
-﻿@model HomeFormViewModel
+﻿@model TodoIndexViewModel
 @{
-    ViewBag.Title = "Form Demo";
-    var HomeFormViewModel = Model;
+    ViewBag.Title = "Todo Demo";
+    var TodoIndexViewModel = Model;
 }
-<view name="HomeForm" outer="MainLayout" model="@HomeFormViewModel">
-    <h2>List of items</h2>
+<view name="TodoIndex" outer="MainLayout" model="@TodoIndexViewModel">
+    <h2>Todos</h2>
+    <form method="get" class="well well-sm get-form" view="TodoIndex" model="TodoIndexViewModel">
+        <input type="search"
+               class="form-control"
+               name="@Html.NameFor(m => m.Form.Filter)"
+               bindattr-value="Form.Filter" />
+        <button type="submit" class="btn btn-primary">
+            Filter
+        </button>
+    </form>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -23,14 +32,14 @@
             <tr>
                 <td bindtext="Description"></td>
                 <td>
-                    <form method="post" view="HomeForm" model="HomeFormViewModel">
+                    <form method="post" view="TodoIndex" model="TodoIndexViewModel">
                         <input type="hidden"
                                name="@Html.NameFor(m => m.Form.ItemId)"
                                bindattr-value="Id" />
                         <button type="submit"
                                 class="btn btn-sm btn-danger"
                                 name="@Html.NameFor(m => m.Form.Command)"
-                                value="@HomeFormFormModel.DeleteCommand">
+                                value="@TodoIndexFormModel.DeleteCommand">
                             Delete
                         </button>
                     </form>
@@ -40,16 +49,16 @@
         <tbody>
             <tr>
                 <td colspan="2" class="text-center">
-                    <form method="post" view="HomeForm" model="HomeFormViewModel">
+                    <form method="post" view="TodoIndex" model="TodoIndexViewModel">
                         <input type="text" class="form-control create-item-input"
                                name="@Html.NameFor(m => m.Form.Description)"
                                bindattr-value="Description"
                                placeholder="Description"
-                               maxlength="10" />
+                               maxlength="30" />
                         <button type="submit"
                                 class="btn btn-success"
                                 name="@Html.NameFor(m => m.Form.Command)"
-                                value="@HomeFormFormModel.CreateCommand">
+                                value="@TodoIndexFormModel.CreateCommand">
                             Create
                         </button>
                     </form>

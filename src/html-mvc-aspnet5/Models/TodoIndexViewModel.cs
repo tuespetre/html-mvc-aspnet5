@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace html_mvc_aspnet5.Models
 {
-    public class HomeGetViewModel
+    public class TodoIndexViewModel
     {
-        public HomeGetFormModel Form { get; set; }
+        public TodoIndexFormModel Form { get; set; }
 
-        public IList<Item> Items { get; set; }
+        public List<Item> Items { get; set; } = new List<Item>();
 
         public bool NoItems
         {
