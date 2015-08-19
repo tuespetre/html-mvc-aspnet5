@@ -7,7 +7,7 @@
         <div class="container">
             <div class="navbar-header">
                 <div class="navbar-text">
-                    html-mvc-aspnet5 demo
+                    html-mvc-aspnet5
                 </div>
             </div>
             <ul class="nav navbar-nav navbar-right">
@@ -22,18 +22,24 @@
                     </a>
                 </li>
             </ul>
-            <div class="navbar-right">
-                <div class="navbar-text" bindtext="Random"></div>
-            </div>
         </div>
     </nav>
+    <div class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-text">
+                Random identifier: <span bindtext="Random"></span>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-push-2">
                 @RenderBody()
                 <footer>
                     <blockquote>
-                        I hope you enjoyed the demo!
+                        Please feel free to contribute to
+                        <a href="https://github.com/tuespetre/html-mvc">html-mvc</a>
+                        or <a href="https://github.com/tuespetre/html-mvc-aspnet5">html-mvc-aspnet5</a> on GitHub.
                         <div class="text-muted">
                             <cite>&mdash; Derek</cite>
                         </div>
