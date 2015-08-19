@@ -13,5 +13,7 @@ namespace html_mvc_aspnet5.Services
         void AddItem(Item item);
 
         void RemoveItem(Guid id);
+
+        void Save();
     }
 }

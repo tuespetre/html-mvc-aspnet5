@@ -8,6 +8,8 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc;
 using System.Reflection;
 using System;
+using Microsoft.AspNet.Session;
+using Microsoft.AspNet.Http.Features;
 
 namespace html_mvc_aspnet5
 {
@@ -15,6 +17,8 @@ namespace html_mvc_aspnet5
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
+            services.AddCaching();
             services.AddMvc().ConfigureMvc(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
@@ -22,7 +26,7 @@ namespace html_mvc_aspnet5
                 config.OutputFormatters.Add(new MultipartJsonOutputFormatter());
             });
 
-            services.AddSingleton<IItemRepository, InMemoryItemRepository>();
+            services.AddScoped<IItemRepository, InMemoryItemRepository>();
             services.AddScoped<HtmlMvcTagHelperContext>();
             services.AddScoped<MultiObjectResultContext>();
             services.AddScoped<LayoutViewModel>();
@@ -53,11 +57,16 @@ namespace html_mvc_aspnet5
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
+            app.UseSession();
 
-            /*app.Use(async (context, next) =>
+            app.Use(async (context, next) =>
             {
                 await next();
-            });*/
+
+                var repository = context.RequestServices.GetRequiredService<IItemRepository>();
+
+                repository.Save();
+            });
 
             app.UseMvc();
         }
