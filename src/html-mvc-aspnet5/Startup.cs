@@ -3,13 +3,6 @@ using Microsoft.Framework.DependencyInjection;
 using html_mvc_aspnet5.Models;
 using html_mvc_aspnet5.Helpers;
 using html_mvc_aspnet5.Services;
-using System.Linq;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc;
-using System.Reflection;
-using System;
-using Microsoft.AspNet.Session;
-using Microsoft.AspNet.Http.Features;
 
 namespace html_mvc_aspnet5
 {
@@ -58,16 +51,6 @@ namespace html_mvc_aspnet5
         {
             app.UseStaticFiles();
             app.UseSession();
-
-            app.Use(async (context, next) =>
-            {
-                await next();
-
-                var repository = context.RequestServices.GetRequiredService<IItemRepository>();
-
-                repository.Save();
-            });
-
             app.UseMvc();
         }
     }

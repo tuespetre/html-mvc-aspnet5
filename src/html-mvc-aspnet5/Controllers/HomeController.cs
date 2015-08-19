@@ -7,6 +7,7 @@ using html_mvc_aspnet5.Models;
 using html_mvc_aspnet5.Helpers;
 using html_mvc_aspnet5.Services;
 using html_mvc_aspnet5.Objects;
+using Microsoft.Framework.Internal;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,6 +21,11 @@ namespace html_mvc_aspnet5.Controllers
         public HomeController(IItemRepository itemRepository)
         {
             this.itemRepository = itemRepository;
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            itemRepository.Save();
         }
 
         [ResultModel(typeof(LayoutViewModel), Persistent = true)]
