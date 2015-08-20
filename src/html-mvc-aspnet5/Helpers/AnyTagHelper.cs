@@ -22,13 +22,11 @@ namespace html_mvc_aspnet5.Helpers
     [TargetElement("*", Attributes = "bindnone")]
     public class AnyTagHelper : TagHelper
     {
-        public AnyTagHelper(IHtmlHelper helper, IModelMetadataProvider metadataProvider, HtmlMvcTagHelperContext context)
+        public AnyTagHelper(IHtmlHelper helper, IModelMetadataProvider metadataProvider, HtmlMvcTagHelperContext modelContext)
         {
-            //var services = contextAccessor.HttpContext.RequestServices;
-            //this.metadataProvider = services.GetService(typeof(IModelMetadataProvider)) as IModelMetadataProvider;
             this.metadataProvider = metadataProvider;
             this.helper = helper;
-            this.modelContext = context;
+            this.modelContext = modelContext;
         }
 
         private IHtmlHelper helper;
@@ -175,7 +173,7 @@ namespace html_mvc_aspnet5.Helpers
         }
 
         private static readonly string[] forbiddenForAny
-            = new string[] { "bindtext", "bindhtml", "bindeach", "bindchildren", "bindnone" };
+            = new string[] { "bindtext", "bindhtml", "bindsome", "bindnone", "bindcount", "bindchildren", "bindskip" };
 
         private static readonly string[] forbiddenForView
             = new string[] { "name", "outer", "model", "scope" };
