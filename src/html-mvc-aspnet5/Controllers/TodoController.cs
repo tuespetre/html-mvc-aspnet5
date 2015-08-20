@@ -58,7 +58,8 @@ namespace html_mvc_aspnet5.Controllers
             return new TodoIndexViewModel
             {
                 Items = items.ToList(),
-                TotalItems = string.Format(pluralizedFormat, total)
+                TotalItems = string.Format(pluralizedFormat, total),
+                Form = form
             };
         }
     }
