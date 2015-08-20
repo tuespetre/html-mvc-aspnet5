@@ -1,9 +1,8 @@
 ﻿@model HomeIndexViewModel
 @{
     ViewBag.Title = "Home";
-    var HomeIndexViewModel = Model;
 }
-<view name="HomeIndex" outer="MainLayout" model="@HomeIndexViewModel">
+<view name="HomeIndex" outer="MainLayout" model-name="HomeIndexViewModel" model-data="@Model">
     <h2>Home/Index View</h2>
     <p>
         Everything in this 'app' is fully server-rendered at first. Once

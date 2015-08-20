@@ -1,9 +1,8 @@
 ﻿@model TodoIndexViewModel
 @{
     ViewBag.Title = "Todo Demo";
-    var TodoIndexViewModel = Model;
 }
-<view name="TodoIndex" outer="MainLayout" model="@TodoIndexViewModel">
+<view name="TodoIndex" outer="MainLayout" model-name="TodoIndexViewModel" model-data="@Model">
     <h2>Todos</h2>
     <form method="get" class="well well-sm get-form" view="TodoIndex" model="TodoIndexViewModel">
         <input type="search"
