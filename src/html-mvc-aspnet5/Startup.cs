@@ -23,33 +23,12 @@ namespace html_mvc_aspnet5
             services.AddScoped<HtmlMvcTagHelperContext>();
             services.AddScoped<MultiObjectResultContext>();
             services.AddScoped<LayoutViewModel>();
-
-            /*services.Add(new ServiceDescriptor(
-                typeof(TargetViewCollection),
-                provider =>
-                {
-                    var targets = AppDomain
-                        .CurrentDomain
-                        .GetAssemblies()
-                        .SelectMany(a => a.DefinedTypes)
-                        .SelectMany(t => t.DeclaredMembers)
-                        .SelectMany(m => m.CustomAttributes)
-                        .Where(a => a.AttributeType == typeof(TargetViewAttribute));
-
-                    return new TargetViewCollection
-                    {
-                        Views =
-                        {
-
-                        }
-                    };
-                },
-                ServiceLifetime.Singleton));*/
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
+            //app.UseViewExports();
             app.UseSession();
             app.UseMvc();
         }

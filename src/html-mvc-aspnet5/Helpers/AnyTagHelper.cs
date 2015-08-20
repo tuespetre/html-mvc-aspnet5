@@ -17,7 +17,9 @@ namespace html_mvc_aspnet5.Helpers
     [TargetElement("*", Attributes = "bindattr-*")]
     [TargetElement("*", Attributes = "bindtext")]
     [TargetElement("*", Attributes = "bindhtml")]
-    [TargetElement("*", Attributes = "bindeach")]
+    [TargetElement("*", Attributes = "bindcount")]
+    [TargetElement("*", Attributes = "bindsome")]
+    [TargetElement("*", Attributes = "bindnone")]
     public class AnyTagHelper : TagHelper
     {
         public AnyTagHelper(IHtmlHelper helper, IModelMetadataProvider metadataProvider, HtmlMvcTagHelperContext context)
@@ -35,14 +37,20 @@ namespace html_mvc_aspnet5.Helpers
 
         private HtmlMvcTagHelperContext modelContext;
 
+        [HtmlAttributeName("bindcount")]
+        public string BindCount { get; set; }
+
         [HtmlAttributeName("bindtext")]
         public string BindText { get; set; }
 
         [HtmlAttributeName("bindhtml")]
         public string BindHtml { get; set; }
 
-        [HtmlAttributeName("bindeach")]
-        public string BindEach { get; set; }
+        [HtmlAttributeName("bindsome")]
+        public string BindSome { get; set; }
+
+        [HtmlAttributeName("bindnone")]
+        public string BindNone { get; set; }
 
         [HtmlAttributeName(DictionaryAttributePrefix = "bindattr-")]
         public IDictionary<string, string> BindAttributes { get; set; } = new Dictionary<string, string>();
@@ -83,22 +91,40 @@ namespace html_mvc_aspnet5.Helpers
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(BindText))
+            if (!string.IsNullOrWhiteSpace(BindCount))
             {
-                var value = modelContext.Value(BindText);
+                output.Attributes.Add("bindcount", BindCount);
+
+                var value = modelContext.Value(BindCount) as IEnumerable;
+
+                if (value == null)
+                {
+                    output.Content.SetContent(0.ToString());
+                }
+                else
+                {
+                    output.Content.SetContent(value.Cast<object>().Count().ToString());
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(BindText))
+            {
                 output.Attributes.Add("bindtext", BindText);
+
+                var value = modelContext.Value(BindText);
                 output.Content.SetContent(helper.Encode(value));
             }
             else if (!string.IsNullOrWhiteSpace(BindHtml))
             {
-                var value = modelContext.Value(BindHtml);
                 output.Attributes.Add("bindhtml", BindHtml);
+
+                var value = modelContext.Value(BindHtml);
                 output.Content.SetContent(helper.Raw(value).ToString());
             }
-            else if (!string.IsNullOrWhiteSpace(BindEach))
+            else if (!string.IsNullOrWhiteSpace(BindSome))
             {
-                var value = modelContext.Value(BindEach) as IEnumerable;
-                output.Attributes.Add("bindeach", BindEach);
+                output.Attributes.Add("bindsome", BindSome);
+                var value = modelContext.Value(BindSome) as IEnumerable;
+
                 if (value != null && value.Cast<object>().Any())
                 {
                     ViewDataDictionary originalData;
@@ -128,6 +154,20 @@ namespace html_mvc_aspnet5.Helpers
 
                     output.Content.SetContent(buffer);
                     modelContext.CurrentData = originalData;
+                }
+                else
+                {
+                    output.Attributes.Add("hidden", true);
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(BindNone))
+            {
+                output.Attributes.Add("bindnone", BindNone);
+                var value = modelContext.Value(BindNone) as IEnumerable;
+
+                if (value == null || value.Cast<object>().Any())
+                {
+                    output.Attributes.Add("hidden", true);
                 }
             }
 

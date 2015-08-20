@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNet.Mvc;
 using html_mvc_aspnet5.Models;
-using html_mvc_aspnet5.Helpers;
 using html_mvc_aspnet5.Services;
 using html_mvc_aspnet5.Objects;
-using Microsoft.Framework.Internal;
-
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace html_mvc_aspnet5.Controllers
 {
@@ -45,8 +38,8 @@ namespace html_mvc_aspnet5.Controllers
                     break;
             }
 
-
             var items = itemRepository.GetAllItems();
+            var total = items.Count();
 
             if (!string.IsNullOrWhiteSpace(form.Filter))
             {
@@ -59,10 +52,13 @@ namespace html_mvc_aspnet5.Controllers
                     select i;
             }
 
+            // Note: you'd probably have this in a resource file somewhere.
+            var pluralizedFormat = total == 1 ? "{0} todo" : "{0} todos";
+
             return new TodoIndexViewModel
             {
                 Items = items.ToList(),
-                Form = form
+                TotalItems = string.Format(pluralizedFormat, total)
             };
         }
     }
