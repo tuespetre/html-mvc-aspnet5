@@ -34,7 +34,10 @@ namespace html_mvc_aspnet5.Helpers
 
             var viewResult = new ViewResult
             {
-                ViewData = new ViewDataDictionary(metadataProvider, actionContext.ModelState),
+                ViewData = new ViewDataDictionary(metadataProvider, actionContext.ModelState)
+                {
+                    Model = context.Object
+                },
                 TempData = new TempDataDictionary(httpContextAccessor, tempdataProvider)
             };
 
