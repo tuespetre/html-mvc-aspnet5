@@ -12,7 +12,7 @@ namespace html_mvc_aspnet5
         {
             services.AddSession();
             services.AddCaching();
-            services.AddMvc().ConfigureMvc(config =>
+            services.AddMvc(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.OutputFormatters.Add(new TextHtmlOutputFormatter());

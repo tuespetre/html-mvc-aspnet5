@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Framework.Internal;
+using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.AspNet.Mvc.ActionResults;
 
 namespace html_mvc_aspnet5.Helpers
 {

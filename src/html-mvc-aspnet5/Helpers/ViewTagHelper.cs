@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using Microsoft.Framework.WebEncoders;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace html_mvc_aspnet5.Helpers
@@ -45,10 +47,14 @@ namespace html_mvc_aspnet5.Helpers
                 {
                     script.Attributes.Add("persistent", "");
                 }
-                script.InnerHtml = jsonHelper.Serialize(ModelData).ToString();
+                script.InnerHtml = new StringHtmlContent(jsonHelper.Serialize(ModelData).ToString());
 
                 output.Attributes.Add("model", ModelName);
-                output.PreContent.SetContent(script.ToHtmlString(TagRenderMode.Normal).ToString());
+                using (var writer = new StringWriter())
+                {
+                    script.WriteTo(writer, new HtmlEncoder());
+                    output.PreContent.SetContent(writer.ToString());
+                }
             }
             else if (!string.IsNullOrWhiteSpace(Scope))
             {

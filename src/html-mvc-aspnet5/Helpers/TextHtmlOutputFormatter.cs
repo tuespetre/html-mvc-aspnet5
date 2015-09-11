@@ -2,6 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNet.Mvc.ModelBinding;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc.Actions;
+using Microsoft.AspNet.Mvc.ActionResults;
+using Microsoft.AspNet.Mvc.Formatters;
 
 namespace html_mvc_aspnet5.Helpers
 {
@@ -21,22 +27,18 @@ namespace html_mvc_aspnet5.Helpers
         public override Task WriteResponseBodyAsync(OutputFormatterContext context)
         {
             var services = context.HttpContext.RequestServices;
-
-            var actionContext = services.GetService(typeof(IScopedInstance<ActionContext>)) 
-                as IScopedInstance<ActionContext>;
-
-            var metadataProvider = services.GetService(typeof(IModelMetadataProvider)) 
-                as IModelMetadataProvider;
+            var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
+            var actionContext = services.GetRequiredService<IActionContextAccessor>().ActionContext;
+            var metadataProvider = services.GetRequiredService<IModelMetadataProvider>();
+            var tempdataProvider = services.GetRequiredService<ITempDataProvider>();
 
             var viewResult = new ViewResult
             {
-                ViewData = new ViewDataDictionary(metadataProvider, new ModelStateDictionary())
-                {
-                    Model = context.Object
-                }
+                ViewData = new ViewDataDictionary(metadataProvider, actionContext.ModelState),
+                TempData = new TempDataDictionary(httpContextAccessor, tempdataProvider)
             };
 
-            return viewResult.ExecuteResultAsync(actionContext.Value);
+            return viewResult.ExecuteResultAsync(actionContext);
         }
     }
 }

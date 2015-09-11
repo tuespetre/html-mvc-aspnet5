@@ -7,6 +7,8 @@ using StringContent = System.Net.Http.StringContent;
 using HttpContent = System.Net.Http.HttpContent;
 using System.Text;
 using Microsoft.Framework.Internal;
+using Microsoft.AspNet.Mvc.Formatters;
+using Microsoft.AspNet.Mvc.ActionResults;
 
 namespace html_mvc_aspnet5.Helpers
 {
